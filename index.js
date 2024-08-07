@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 connectDB();
 
-// Use the routes handling function
 routes(app);
 
 app.listen(PORT, () => {
