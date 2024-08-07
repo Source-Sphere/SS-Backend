@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const testService = require("../services/testService");
 
-// Define the test
+// Define the test route
 router.get("/example", (req, res) => {
   try {
     const response = testService.testFunction();
