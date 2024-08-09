@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "burn": "nodemon index.js"
+    "burn": "nodemon index.js",
+    "dev": "node index.js"
   },
   "keywords": [],
   "author": "",
