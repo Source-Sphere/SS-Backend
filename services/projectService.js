@@ -1,26 +1,22 @@
 const Project = require("../models/projectData");
 
-const createPost = async (req, res) => {
-  try {
-    const { title, description, url } = req.body;
+const createPost = async (req) => {
+  const { title, description, url } = req.body;
 
-    // Validate input
-    if (!title || !description || !url) {
-      throw new Error ( "All Feilds are required");
-    }
-
-    // Create a new project
-    const newProject = new Project({
-      title,
-      description,
-      url,
-    });
-    await newProject.save();
-    return newProject;
-  } catch (error) {
-    console.error("Error creating project:", error);
-    throw new Error ( "Server Error");
+  // Validate input
+  if (!title || !description || !url) {
+    return { status: 400, message: "All fields are required" };
   }
+
+  // Create a new project
+  const newProject = new Project({
+    title,
+    description,
+    url,
+  });
+
+  await newProject.save();
+  return { status: 201, data: newProject };
 };
 
 module.exports = { createPost };
