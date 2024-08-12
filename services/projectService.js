@@ -1,7 +1,7 @@
 const Project = require("../models/projectData");
 
 const createPost = async (req) => {
-  const { title, description, url } = req.body;
+  const { title, description, url, userId } = req.body;
 
   // Validate input
   if (!title || !description || !url) {
@@ -13,6 +13,7 @@ const createPost = async (req) => {
     title,
     description,
     url,
+    userId,
   });
 
   await newProject.save();

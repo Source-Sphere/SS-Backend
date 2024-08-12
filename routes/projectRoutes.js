@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const projectService = require("../services/projectService");
+const authenticateJWT = require("../middleware/auth"); // Import the JWT middleware
 
-router.post("/create_post", async (req, res) => {
+// Apply the middleware to the route
+router.post("/create_post", authenticateJWT, async (req, res) => {
   try {
     const response = await projectService.createPost(req);
 
