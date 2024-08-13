@@ -1,7 +1,7 @@
 const Project = require("../models/projectData");
 
 const createPost = async (req) => {
-  const { title, description, url, userId } = req.body;
+  const { title, description, url, tags, userId } = req.body;
 
   // Validate input
   if (!title || !description || !url) {
@@ -13,6 +13,7 @@ const createPost = async (req) => {
     title,
     description,
     url,
+    tags, // Include tags in the new project
     userId,
   });
 
@@ -20,4 +21,43 @@ const createPost = async (req) => {
   return { status: 201, data: newProject };
 };
 
-module.exports = { createPost };
+const getAllProjects = async () => {
+  try {
+    const projects = await Project.find();
+    return { status: 200, data: projects };
+  } catch (error) {
+    return { status: 500, message: "Server error", error: error.message };
+  }
+};
+
+// Get a project by ID
+const getProjectById = async (id) => {
+  try {
+    const project = await Project.findById(id);
+    if (!project) {
+      return { status: 404, message: "Project not found" };
+    }
+    return { status: 200, data: project };
+  } catch (error) {
+    return { status: 500, message: "Server error", error: error.message };
+  }
+};
+
+const getProjectsByUserId = async (userId) => {
+  try {
+    const projects = await Project.find({ userId });
+    if (projects.length === 0) {
+      return { status: 404, message: "No projects found for this user" };
+    }
+    return { status: 200, data: projects };
+  } catch (error) {
+    return { status: 500, message: "Server error", error: error.message };
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllProjects,
+  getProjectById,
+  getProjectsByUserId,
+};

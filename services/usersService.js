@@ -37,7 +37,7 @@ const createUser = async (req) => {
   const token = jwt.sign(
     { userId: newUser._id, username: newUser.username },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" } // Token expires in 1 hour
+    { expiresIn: "10h" } // Token expires in 1 hour
   );
 
   return { status: 201, data: { user: newUser, token } };
