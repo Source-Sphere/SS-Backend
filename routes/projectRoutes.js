@@ -18,4 +18,22 @@ router.post("/create_post", authenticateJWT, async (req, res) => {
   }
 });
 
+router.get("/get_projects", authenticateJWT, async (req, res) => {
+  const result = await projectService.getAllProjects();
+  res.status(result.status).json(result.data || { message: result.message });
+});
+
+// GET a single project by ID
+router.get("/get_projects_by_id", authenticateJWT, async (req, res) => {
+  const { id } = req.body;
+  const result = await projectService.getProjectById(id);
+  res.status(result.status).json(result.data || { message: result.message });
+});
+
+router.get("/get_projects_by_user_id", authenticateJWT, async (req, res) => {
+  const { userId } = req.params;
+  const result = await projectService.getProjectsByUserId(userId);
+  res.status(result.status).json(result.data || { message: result.message });
+});
+
 module.exports = router;
