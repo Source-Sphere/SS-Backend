@@ -18,7 +18,7 @@ router.post("/create_post", authenticateJWT, async (req, res) => {
   }
 });
 
-router.get("/get_projects", authenticateJWT, async (req, res) => {
+router.get("/get_projects", async (req, res) => {
   const result = await projectService.getAllProjects();
   res.status(result.status).json(result.data || { message: result.message });
 });
