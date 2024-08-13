@@ -21,6 +21,10 @@ const projectSchema = new mongoose.Schema({
     type: [String], // Array of strings to store tags
     trim: true,
   },
+  shortDescription: {
+    type: String,
+    trim: true,
+  },
 });
 
 // Create the model
