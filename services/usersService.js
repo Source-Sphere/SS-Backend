@@ -43,4 +43,61 @@ const createUser = async (req) => {
   return { status: 201, data: { user: newUser, token } };
 };
 
-module.exports = { createUser };
+const loginUser = async (req) => {
+  const { username, password } = req.body;
+
+  // Validate input
+  if (!username || !password) {
+    return { status: 400, message: "Username and password are required" };
+  }
+
+  // Find the user by username
+  const user = await User.findOne({ username });
+
+  // Check if user exists and if password matches
+  if (!user || !(await user.comparePassword(password))) {
+    return { status: 401, message: "Invalid username or password" };
+  }
+
+  // Generate JWT token and refresh token
+  const token = jwt.sign(
+    { userId: user._id, username: user.username },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" } // Access token expiration
+  );
+
+  const refreshToken = jwt.sign(
+    { userId: user._id, username: user.username },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" } // Refresh token expiration
+  );
+
+  // Return the user details, access token, and refresh token
+  return { status: 200, data: { user, token, refreshToken } };
+};
+
+const refreshAccessToken = async (req) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return { status: 400, message: "Refresh token is required" };
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const newToken = jwt.sign(
+      { userId: decoded.userId, username: decoded.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" } // New access token expiration
+    );
+    return { status: 200, data: { token: newToken } };
+  } catch (error) {
+    return { status: 403, message: "Invalid or expired refresh token" };
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  refreshAccessToken,
+};
