@@ -11,12 +11,12 @@ const PORT = process.env.PORT || 80;
 
 const corsOptions = {
   origin: "*",
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "X-Requested-With",
-    "Accept",
-  ],
+  // allowedHeaders: [
+  //   "Content-Type",
+  //   "Authorization",
+  //   "X-Requested-With",
+  //   "Accept",
+  // ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
