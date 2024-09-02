@@ -6,16 +6,16 @@ const dotenv = require("dotenv");
 dotenv.config(); // Ensure this is called to load environment variables
 
 const createUser = async (req) => {
-  const { email, phone, username, realName, password } = req.body;
+  const { email, phone, password, gitHubUrl } = req.body;
 
   // Validate input
-  if (!email || !phone || !username || !realName || !password) {
+  if (!email || !username || !password || !gitHubUrl) {
     return { status: 400, message: "All fields are required" };
   }
 
   // Check if the username, email, or phone already exists
   const existingUser = await User.findOne({
-    $or: [{ email }, { phone }, { username }],
+    $or: [{ email }, { gitHubUrl }, { username }],
   });
 
   if (existingUser) {
@@ -26,9 +26,8 @@ const createUser = async (req) => {
   const newUser = new User({
     email,
     phone,
-    username,
-    realName,
-    password, // Save the password
+    password,
+    gitHubUrl, // Save the password
   });
 
   await newUser.save();
