@@ -10,7 +10,7 @@ const registerOrg = async (req) => {
   if (!orgName?.trim() || !orgURL?.trim() || !desc?.trim()) {
     return {
       status: 400,
-      message: "Organization name, URL and description are required",
+      message: "Organization, URL and description are required",
     };
   }
 
